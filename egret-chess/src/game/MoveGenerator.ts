@@ -16,10 +16,7 @@ module chess {
          * @param toY 
          */
         public isValidMove(position: [][], fromX: number, fromY: number, toX: number, toY: number): boolean {
-            let i: number;
-            let j: number;
-            let moveChessID: number;
-            let targetID: number;
+            let i: number, j: number, moveChessID: number, targetID: number;
             if (fromY == toY && fromX == toX)
                 return false;   // 目的与源相同，非法
             moveChessID = position[fromY][fromX];
@@ -241,12 +238,7 @@ module chess {
          * @param side 指明哪一方的走法， true为红方, false 为黑房
          */
         public createPossibleMove(position: [][], ply: number, side: number){
-            let x: number;
-            let y: number;
-            let chessID: number;
-            let flag: boolean;
-            let i: number;
-            let j: number;
+            let chessID: number, i: number, j: number;
             this._moveCount = 0;
             for (j = 0; j < 9; j ++)
                 for (i = 0; i < 10; i ++){
@@ -306,8 +298,7 @@ module chess {
          * @param ply 插入数组第几层
          */
         public genKingMove(position: [][], i: number, j: number, ply: number){
-            let x: number;
-            let y: number;
+            let x: number, y: number;
             for (y = 0; y < 3; y ++)
                 for (x = 3; x < 6; x ++)
                     if (this.isValidMove(position, j, i, x, y)) // 走步是否合法
@@ -327,8 +318,7 @@ module chess {
          * @param ply 
          */
         public genRBishopMove(position: [][], i: number, j: number, ply: number){
-            let x: number;
-            let y: number;
+            let x: number, y: number;
             for (y = 7; y < 10; y ++)
                 for (x = 3; x < 6; x ++)
                     if (this.isValidMove(position, j, i, x, y)) // 走步是否合法
@@ -343,8 +333,7 @@ module chess {
          * @param ply 
          */
         public genBBishopMove(position: [][], i: number, j: number, ply: number){
-            let x: number;
-            let y: number;
+            let x: number, y: number;
             for (y = 0; y < 3; y ++)
                 for (x = 3; x < 6; x ++)
                     if (this.isValidMove(position, j, i, x, y)) // 走步是否合法
@@ -359,8 +348,7 @@ module chess {
          * @param ply 
          */
         public genElephantMove(position: [][], i: number, j: number, ply: number){
-            let x: number;
-            let y: number;
+            let x: number, y: number;
             // 插入右下方的有效走法
             x = j + 2;
             y = i + 2;
@@ -391,8 +379,7 @@ module chess {
          * @param ply 
          */
         public genHourseMove(position: [][], i: number, j: number, ply: number){
-            let x: number;
-            let y: number;
+            let x: number, y: number;
             // 插入右下方的有效走法
             x = j + 2;  // 右2
             y = j + 1;  // 下1
@@ -443,9 +430,7 @@ module chess {
          * @param ply 
          */
         public genRPawnMove(position: [][], i: number, j: number, ply: number){
-            let x: number;
-            let y: number;
-            let chessID: number;
+            let x: number, y: number, chessID: number;
             chessID = position[i][j];
             y = i - 1;  // 向前
             x = j;
@@ -470,9 +455,7 @@ module chess {
          * @param ply 
          */
         public genBPawnMove(position: [][], i: number, j: number, ply: number){
-            let x: number;
-            let y: number;
-            let chessID: number;
+            let x: number, y: number, chessID: number;
             chessID = position[i][j];
             y = i + 1;  // 向前
             x = j;
@@ -497,9 +480,7 @@ module chess {
          * @param ply 
          */
         public genCarMove(position: [][], i: number, j: number, ply: number){ 
-            let x: number;
-            let y: number;
-            let chessID: number;
+            let x: number, y: number, chessID: number;
             chessID = position[i][j];
             // 插入右边的可走位置
             x = j + 1;
@@ -567,10 +548,7 @@ module chess {
          * @param ply 
          */
         public genCanonMove(position: [][], i: number, j: number, ply: number){
-            let x: number;
-            let y: number;
-            let flag: boolean;
-            let chessID: number;
+            let x: number, y: number, flag: boolean, chessID: number;
             chessID = position[i][j];
             // 插入向右方向上的可走位置
             x = j + 1;
