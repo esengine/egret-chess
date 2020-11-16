@@ -296,10 +296,10 @@ module chess {
          * @param x 
          * @param y 
          */
-        public addPoint(x: number, y: number){
+        public addPoint(x: number, y: number) {
             this.relatePos[this.posCount].x = x;
             this.relatePos[this.posCount].y = y;
-            this.posCount ++;
+            this.posCount++;
         }
 
         /**
@@ -309,45 +309,292 @@ module chess {
          * @param j 
          * @param i 
          */
-        public getRelatePiece(position: [][], j: number, i: number){
+        public getRelatePiece(position: [][], j: number, i: number) {
             this.posCount = 0;
-            let chessID: number, flag: number, x: number, y: number;
+            let chessID: number, flag: boolean, x: number, y: number;
             chessID = position[i][j];
             switch (chessID) {
                 case ChessDefined.rKING:    // 红帅
                 case ChessDefined.bKING:    // 黑将
                     // 循环检查九宫之内那些位置可到达/保护
                     // 扫描两边九宫包含了照像的情况
-                    for (y = 0; y < 3; y ++)
-                        for (x = 3; x < 6; x ++)
+                    for (y = 0; y < 3; y++)
+                        for (x = 3; x < 6; x++)
                             if (this.canTouch(position, j, i, x, y))    // 能否走到
                                 this.addPoint(x, y);    // 可到达/保护的位置加入数组
                     // 循环检查九宫之内那些位置可到达/保护
                     // 扫描两边九宫包含了照像的情况
-                    for (y = 7; y < 10; y ++)
-                        for (x = 3; x < 6; x ++)
+                    for (y = 7; y < 10; y++)
+                        for (x = 3; x < 6; x++)
                             if (this.canTouch(position, j, i, x, y))    // 能否走到
                                 this.addPoint(x, y);    // 可到达/保护的位置加入数组
                     break;
                 case ChessDefined.rBISHOP:  // 红士
                     // 循环检查九宫之内那些位置可到达/保护
-                    for (y = 7; y < 10; y ++)
-                        for (x = 3; x < 6; x ++)
-                        if (this.canTouch(position, j, i, x, y))    // 能否走到
-                            this.addPoint(x, y);    // 可到达/保护的位置加入数组
+                    for (y = 7; y < 10; y++)
+                        for (x = 3; x < 6; x++)
+                            if (this.canTouch(position, j, i, x, y))    // 能否走到
+                                this.addPoint(x, y);    // 可到达/保护的位置加入数组
                     break;
                 case ChessDefined.bBISHOP:  // 红士
                     // 循环检查九宫之内那些位置可到达/保护
-                    for (y = 0; y < 3; y ++)
-                        for (x = 3; x < 6; x ++)
-                        if (this.canTouch(position, j, i, x, y))    // 能否走到
-                            this.addPoint(x, y);    // 可到达/保护的位置加入数组
+                    for (y = 0; y < 3; y++)
+                        for (x = 3; x < 6; x++)
+                            if (this.canTouch(position, j, i, x, y))    // 能否走到
+                                this.addPoint(x, y);    // 可到达/保护的位置加入数组
                     break;
                 case ChessDefined.rELEPHANT:    // 红相
                 case ChessDefined.bELEPHANT:    // 黑象
                     // 右下
+                    x = j + 2;
+                    y = i + 2;
+                    if (x < 9 && y < 10 && this.canTouch(position, j, i, x, y))
+                        this.addPoint(x, y);
+                    // 右上
+                    x = j + 2;
+                    y = i - 2;
+                    if (x < 9 && y >= 0 && this.canTouch(position, j, i, x, y))
+                        this.addPoint(x, y);
+                    // 左下
+                    x = j - 2;
+                    y = i + 2;
+                    if (x >= 0 && y < 10 && this.canTouch(position, j, i, x, y))
+                        this.addPoint(x, y);
+                    // 左上
+                    x = j - 2;
+                    y = i - 2;
+                    if (x >= 0 && y >= 0 && this.canTouch(position, j, i, x, y))
+                        this.addPoint(x, y);
+                    break;
+                case ChessDefined.rHOURSE:  // 红马
+                case ChessDefined.bHOURSE:  // 黑马
+                    // 检查右下方是否能走/保护
+                    x = j + 2;
+                    y = i - 1;
+                    if ((x < 9 && y < 10) && this.canTouch(position, j, i, x, y))
+                        this.addPoint(x, y);
+                    // 检查右上方是否能走/保护
+                    x = j + 2;
+                    y = i - 1;
+                    if ((x < 9 && y >= 0) && this.canTouch(position, j, i, x, y))
+                        this.addPoint(x, y);
+                    // 检查左下方是否能走/保护
+                    x = j - 2;
+                    y = i + 1;
+                    if ((x >= 0 && y < 10) && this.canTouch(position, j, i, x, y))
+                        this.addPoint(x, y);
+                    // 检查左上方是否能走/保护
+                    x = j - 2;
+                    y = i - 1;
+                    if ((x >= 0 && y >= 0) && this.canTouch(position, j, i, x, y))
+                        this.addPoint(x, y);
+                    // 检查右下方是否能走/保护
+                    x = j + 1;
+                    y = i + 2;
+                    if ((x < 9 && y < 10) && this.canTouch(position, j, i, x, y))
+                        this.addPoint(x, y);
+                    // 检查左下方是否能走/保护
+                    x = j - 1;
+                    y = i + 2;
+                    if ((x >= 0 && y < 10) && this.canTouch(position, j, i, x, y))
+                        this.addPoint(x, y);
+                    // 检查右上方是否能走/保护
+                    x = j + 1;
+                    y = i - 2;
+                    if ((x < 9 && y >= 0) && this.canTouch(position, j, i, x, y))
+                        this.addPoint(x, y);
+                    // 检查左上方是否能走/保护
+                    x = j - 1;
+                    y = i - 2;
+                    if ((x >= 0 && y >= 0) && this.canTouch(position, j, i, x, y))
+                        this.addPoint(x, y);
+                    break;
+                case ChessDefined.rCAR: // 红车
+                case ChessDefined.bCAR: // 黑车
+                    // 检查向右的位置是否能走/保护
+                    x = j + 1;
+                    y = i;
+                    while (x < 9) {
+                        if (ChessDefined.noChess == position[y][x]) // 空白
+                            this.addPoint(x, y);
+                        else {
+                            // 碰到第一个棋子
+                            this.addPoint(x, y);
+                            break;  // 后面的位置不能走了
+                        }
+
+                        x++;
+                    }
+                    // 检查向左的位置是否能走/保护
+                    x = j - 1;
+                    y = i;
+                    while (x >= 0) {
+                        if (ChessDefined.noChess == position[y][x]) // 空白
+                            this.addPoint(x, y);
+                        else {
+                            // 碰到第一个棋子
+                            this.addPoint(x, y);
+                            break;  // 后面的位置不能走了
+                        }
+
+                        x--;
+                    }
+                    // 检查向下的位置是否能走/保护
+                    x = j;
+                    y = i + 1;
+                    while (y < 10) {
+                        if (ChessDefined.noChess == position[y][x]) // 空白
+                            this.addPoint(x, y);
+                        else {
+                            // 碰到第一个棋子
+                            this.addPoint(x, y);
+                            break;
+                        }
+
+                        y++;
+                    }
+                    // 检查向上的位置是否能走/保护
+                    x = j;
+                    y = i - 1;
+                    while (y >= 0) {
+                        if (ChessDefined.noChess == position[y][x]) // 空白
+                            this.addPoint(x, y);
+                        else {
+                            // 碰到第一个棋子
+                            this.addPoint(x, y);
+                            break;
+                        }
+
+                        y--;
+                    }
+                    break;
+                case ChessDefined.rPAWN:    // 红卒
+                    // 察看向前是否到底
+                    y = i - 1;
+                    x = j;
+                    if (y >= 0)
+                        this.addPoint(x, y);    // 没到底，可走
+                    if (i < 5) {
+                        // 如已过河
+                        y = i;
+                        x = j + 1;  // 向右
+                        if (x < 9)
+                            this.addPoint(x, y);    // 未到右边，可走
+                        x = j - 1;  // 向左
+                        if (x >= 0)
+                            this.addPoint(x, y);    // 未到左边，可走
+                    }
+                    break;
+                case ChessDefined.bPAWN:
+                    // 察看向前是否到底
+                    y = i + 1;
+                    x = j;
+                    if (y < 10) // 是否已沉底
+                        this.addPoint(x, y);   // 没到底
+                    if (i > 4) {
+                        // 如已过河
+                        y = i;
+                        x = j + 1;  // 向右
+                        if (x < 9)
+                            this.addPoint(x, y);    // 未到右边，可走
+                        x = j - 1;  // 向左
+                        if (x >= 0)
+                            this.addPoint(x, y);    // 未到左边，可走
+                    }
+                    break;
+                case ChessDefined.bCANON:   // 黑炮
+                case ChessDefined.rCANON:   // 红炮
+                    // 查看向右方向的可走/保护的位置
+                    x = j + 1;
+                    y = i;
+                    flag = false;
+                    while (x < 9) {
+                        if (ChessDefined.noChess == position[y][x]) {
+                            // 空白位置
+                            if (!flag)
+                                this.addPoint(x, y);
+                        } else {
+                            // 有棋子
+                            if (!flag)
+                                flag = true;    // 是第一个棋子
+                            else {
+                                // 是第二个棋子
+                                this.addPoint(x, y);
+                                break;
+                            }
+                        }
+
+                        x ++;   // 继续向右
+                    }
+                    // 察看向左方向的可走/保护的位置
+                    x = j - 1;
+                    flag = false;
+                    while (x >= 0) {
+                        if (ChessDefined.noChess == position[y][x]) {
+                            // 空白位置
+                            if (!flag)
+                                this.addPoint(x, y);
+                        } else {
+                            // 有棋子
+                            if (!flag)
+                                flag = true;    // 是第一个棋子
+                            else {
+                                // 是第二个棋子
+                                this.addPoint(x, y);
+                                break;
+                            }
+                        }
+                        x --;   // 继续向左
+                    }
+
+                    // 查看向下方向的可走/保护的位置
+                    x = j;
+                    y = i + 1;
+                    flag = false;
+                    while (y < 10){
+                        if (ChessDefined.noChess == position[y][x]) {
+                            // 空白位置
+                            if (!flag)
+                                this.addPoint(x, y);
+                        } else {
+                            // 有棋子
+                            if (!flag)
+                                flag = true;    // 是第一个棋子
+                            else {
+                                // 是第二个棋子
+                                this.addPoint(x, y);
+                                break;
+                            }
+                        }
+                        y ++;   // 继续向下
+                    }
+                    // 查看向上方向的可走/保护的位置
+                    y = i - 1;
+                    flag = false;
+                    while (y >= 0){
+                        if (ChessDefined.noChess == position[y][x]) {
+                            // 空白位置
+                            if (!flag)
+                                this.addPoint(x, y);
+                        } else {
+                            // 有棋子
+                            if (!flag)
+                                flag = true;    // 是第一个棋子
+                            else {
+                                // 是第二个棋子
+                                this.addPoint(x, y);
+                                break;
+                            }
+                        }
+
+                        y --;   // 继续向上
+                    }
+                    break;
+                default:
                     break;
             }
+
+            return this.posCount;
         }
 
         /**
@@ -359,7 +606,7 @@ module chess {
          * @param toX 
          * @param toY 
          */
-        public canTouch(position: [][], fromX: number, fromY: number, toX: number, toY: number): boolean{
+        public canTouch(position: [][], fromX: number, fromY: number, toX: number, toY: number): boolean {
             let i: number, j: number;
             let moveChessID: number, targetID: number;
             if (fromY == toY && fromX == toX)
@@ -372,10 +619,10 @@ module chess {
                     {
                         if (fromX != toX)
                             return false;
-                        for (i = fromY + 1; i < toY; i ++)
+                        for (i = fromY + 1; i < toY; i++)
                             if (position[i][fromX] != ChessDefined.noChess)
                                 return false;
-                    }else {
+                    } else {
                         if (toY > 2 || toX > 5 || toX < 3)
                             return false;   // 目标点在九宫之外
                         if (Math.abs(fromY - toY) + Math.abs(toX - fromX) > 1)
@@ -431,7 +678,7 @@ module chess {
                     {
                         if (fromX != toX)
                             return false;   // 将帅不再同一列
-                        for (i = fromY - 1; i > toY; i --)
+                        for (i = fromY - 1; i > toY; i--)
                             if (position[i][fromX] != ChessDefined.noChess)
                                 return false;   // 中间有别的子
                     } else {
@@ -445,23 +692,23 @@ module chess {
                 case ChessDefined.rCANON:   // 黑车
                     if (fromY != toY && fromX != toX)
                         return false;   // 车走直线
-                    if (fromY == toY){  // 横向
+                    if (fromY == toY) {  // 横向
                         if (fromX < toX) {  // 向右
-                            for (i = fromX + 1; i < toX; i ++)
+                            for (i = fromX + 1; i < toX; i++)
                                 if (position[fromY][i] != ChessDefined.noChess)
                                     return false;
                         } else { // 向左
-                            for (i = toX + 1; i < fromX; i ++)
+                            for (i = toX + 1; i < fromX; i++)
                                 if (position[fromY][i] != ChessDefined.noChess)
                                     return false;
                         }
                     } else { // 纵向
                         if (fromY < toY) {  // 向下
-                            for (j = fromY + 1; j < toY; j ++)
+                            for (j = fromY + 1; j < toY; j++)
                                 if (position[j][fromX] != ChessDefined.noChess)
                                     return false;
                         } else {    // 向上
-                            for (j = toY + 1; j < fromY; j ++)
+                            for (j = toY + 1; j < fromY; j++)
                                 if (position[j][fromX] != ChessDefined.noChess)
                                     return false;
                         }
@@ -472,16 +719,16 @@ module chess {
                     if (!((Math.abs(toX - fromX) == 1 && Math.abs(toY - fromY) == 2)
                         || (Math.abs(toX - fromX) == 2 && Math.abs(toY - fromY) == 1)))
                         return false;   // 马走日字
-                    if (toX - fromX == 2){  // 横向右走
+                    if (toX - fromX == 2) {  // 横向右走
                         i = fromX + 1;
                         j = fromY;
-                    } else if(fromX - toX == 2){    // 横向左
+                    } else if (fromX - toX == 2) {    // 横向左
                         i = fromX - 1;
                         j = fromY;
-                    } else if(toY - fromY == 2) {   // 纵向下
+                    } else if (toY - fromY == 2) {   // 纵向下
                         i = fromY;
                         j = fromY + 1;
-                    } else if(fromY - toY == 2) {   // 纵向上
+                    } else if (fromY - toY == 2) {   // 纵向上
                         i = fromX;
                         j = fromY - 1;
                     }
@@ -494,61 +741,61 @@ module chess {
                     if (fromY != toY && fromX != toX)
                         return false;   // 炮走直线
                     // 炮不吃子时经过的路线中不能有棋子
-                    if (position[toY][toX] == ChessDefined.noChess){    // 不吃子时
+                    if (position[toY][toX] == ChessDefined.noChess) {    // 不吃子时
                         if (fromY == toY) { // 横向
                             if (fromX < toX) {  // 向右
-                                for (i = fromX + 1; i < toX; i ++)
+                                for (i = fromX + 1; i < toX; i++)
                                     if (position[fromY][i] != ChessDefined.noChess)
                                         return false;
                             } else {    // 向左
-                                for (i = toX + 1; i < fromX; i ++)
+                                for (i = toX + 1; i < fromX; i++)
                                     if (position[fromY][i] != ChessDefined.noChess)
                                         return false;
                             }
                         } else { // 纵向
                             if (fromY < toY) {  // 向下
-                                for (j = fromY + 1; j < toY; j ++)
+                                for (j = fromY + 1; j < toY; j++)
                                     if (position[j][fromX] != ChessDefined.noChess)
                                         return false;
                             } else {    // 向上
-                                for (j = toY + 1; j < fromY; j ++)
+                                for (j = toY + 1; j < fromY; j++)
                                     if (position[j][fromX] != ChessDefined.noChess)
                                         return false;
                             }
                         }
-                    }else {
+                    } else {
                         // 吃子时
                         let count = 0;
-                        if (fromY == toY){  // 横向
+                        if (fromY == toY) {  // 横向
                             if (fromX < toX) {  // 向右
-                                for (i = fromX + 1; i < toX; i ++)
+                                for (i = fromX + 1; i < toX; i++)
                                     if (position[fromY][i] != ChessDefined.noChess)
-                                        count ++;   // 计算隔几个棋子
-                                    if (count != 1) // 不是隔一个棋子，不能吃
-                                        return false;
+                                        count++;   // 计算隔几个棋子
+                                if (count != 1) // 不是隔一个棋子，不能吃
+                                    return false;
                             } else {    // 向左
-                                for (i = toX + 1; i < fromX; i ++)
+                                for (i = toX + 1; i < fromX; i++)
                                     if (position[fromY][i] != ChessDefined.noChess)
-                                        count ++;   // 计算隔几个棋子
-                                    if (count != 1)
-                                        return false;   // 不是隔一个棋子，不能吃
+                                        count++;   // 计算隔几个棋子
+                                if (count != 1)
+                                    return false;   // 不是隔一个棋子，不能吃
                             }
-                        }else {
+                        } else {
                             // 纵向
-                            if (fromY < toY){
+                            if (fromY < toY) {
                                 // 向下
-                                for (j = fromY + 1; j < toY; j ++)
+                                for (j = fromY + 1; j < toY; j++)
                                     if (position[j][fromX] != ChessDefined.noChess)
-                                        count ++;   // 计算隔几个棋子
-                                    if (count != 1)
-                                        return false;   // 不是隔一个棋子，不能吃
+                                        count++;   // 计算隔几个棋子
+                                if (count != 1)
+                                    return false;   // 不是隔一个棋子，不能吃
                             } else {
                                 // 向上
-                                for (j = toY + 1; j < fromY; j ++)
+                                for (j = toY + 1; j < fromY; j++)
                                     if (position[j][fromX] != ChessDefined.noChess)
-                                        count ++;   // 计算隔几个棋子
-                                    if (count != 1)
-                                        return false;   // 不是隔一个棋子，不能吃
+                                        count++;   // 计算隔几个棋子
+                                if (count != 1)
+                                    return false;   // 不是隔一个棋子，不能吃
                             }
                         }
                     }
