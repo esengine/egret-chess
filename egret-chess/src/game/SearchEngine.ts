@@ -14,6 +14,21 @@ module chess {
         /** 当前搜索的最大搜索深度 */
         protected maxDepth: number;
 
+        /** 设置最大搜索深度 */
+        public setSearchDepth(depth: number){
+            this.searchDepth = depth;
+        }
+
+        /** 设定走法产生器 */
+        public setMoveGenerator(mg: MoveGenerator) {
+            this.mG = mg;
+        }
+
+        /** 设定估值核心 */
+        public setEveluator(evel: Eveluation) {
+            this.eveal = evel;
+        }
+
         /**
          * 根据传入的走法改变棋盘
          * @param move 要进行的走法
